@@ -33,133 +33,126 @@ const FetchData = ({
 };
 
 // Post Data
-// const PostData = ({
-//   url,
-//   key,
-//   optionalKey,
-//   auth = false,
-//   navigateOnSuccess,
-//   navigateOnError,
-//   resetForm,
-//   dynamicURL = false,
-//   loginContext = false,
-//   onSuccess,
-//   onError,
-// }) => {
-//   const navigate = useNavigate();
-//   const queryClient = useQueryClient();
-//   const { login } = useContext(AuthContext);
+const PostData = ({
+  url,
+  key,
+  optionalKey,
+  navigateOnSuccess,
+  navigateOnError,
+  resetForm,
+  dynamicURL = false,
+  onSuccess,
+  onError,
+}) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: async ({ id, formData }) => {
-//       const apiUrl = dynamicURL ? `${url}/${id}` : url;
-//       const instance = auth ? AxiosAuthInstance : AxiosWithOutAuthInstance;
+  return useMutation({
+    mutationFn: async ({ id, formData }) => {
+      const apiUrl = dynamicURL ? `${url}/${id}` : url;
 
-//       const response = await instance.post(apiUrl, formData, {
-//         headers: { "Content-Type": "multipart/form-data" },
-//       });
+      const response = await axiosInstance.post(apiUrl, formData, {
+        // Use axiosInstance here
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-//       return response.data;
-//     },
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries([key, optionalKey || ""]);
-//       toast.success(data?.message || "Operation successful");
-//       if (onSuccess) onSuccess();
-//       if (resetForm) resetForm();
-//       if (navigateOnSuccess) navigate(navigateOnSuccess);
-//       if (loginContext) login(data);
-//     },
-//     onError: (error) => {
-//       const errorMsg =
-//         error?.response?.data?.message ||
-//         error?.response?.data?.error ||
-//         "Something went wrong, please try again later";
-//       toast.error(errorMsg);
-//       if (onError) onError();
-//       if (navigateOnError) navigate(navigateOnError);
-//     },
-//   });
-// };
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries([key, optionalKey || ""]);
+      toast.success(data?.message || "Operation successful");
+      if (onSuccess) onSuccess();
+      if (resetForm) resetForm();
+      if (navigateOnSuccess) navigate(navigateOnSuccess);
+    },
+    onError: (error) => {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Something went wrong, please try again later";
+      toast.error(errorMsg);
+      if (onError) onError();
+      if (navigateOnError) navigate(navigateOnError);
+    },
+  });
+};
 
 // Put Data
-// const PutData = ({
-//   url,
-//   key,
-//   optionalKey,
-//   auth = true,
-//   navigateOnSuccess,
-//   navigateOnError,
-//   resetForm,
-//   dynamicURL = false,
-//   onSuccess,
-//   onError,
-// }) => {
-//   const navigate = useNavigate();
-//   const queryClient = useQueryClient();
+const PutData = ({
+  url,
+  key,
+  optionalKey,
+  auth = true,
+  navigateOnSuccess,
+  navigateOnError,
+  resetForm,
+  dynamicURL = false,
+  onSuccess,
+  onError,
+}) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: async ({ id, formData }) => {
-//       const apiUrl = dynamicURL ? `${url}/${id}` : url;
-//       const instance = auth ? AxiosAuthInstance : AxiosWithOutAuthInstance;
+  return useMutation({
+    mutationFn: async ({ id, formData }) => {
+      const apiUrl = dynamicURL ? `${url}/${id}` : url;
+      const instance = auth ? AxiosAuthInstance : AxiosWithOutAuthInstance;
 
-//       const response = await instance.put(apiUrl, formData, {
-//         headers: { "Content-Type": "multipart/form-data" },
-//       });
+      const response = await instance.put(apiUrl, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-//       return response.data;
-//     },
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries([key, optionalKey || ""]);
-//       toast.success(data?.message || "Operation successful");
-//       if (onSuccess) onSuccess();
-//       if (resetForm) resetForm();
-//       if (navigateOnSuccess) navigate(navigateOnSuccess);
-//     },
-//     onError: (error) => {
-//       const errorMsg =
-//         error?.response?.data?.message ||
-//         error?.response?.data?.error ||
-//         "Something ";
-//       toast.error(errorMsg);
-//       if (onError) onError();
-//       if (navigateOnError) navigate(navigateOnError);
-//     },
-//   });
-// };
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries([key, optionalKey || ""]);
+      toast.success(data?.message || "Operation successful");
+      if (onSuccess) onSuccess();
+      if (resetForm) resetForm();
+      if (navigateOnSuccess) navigate(navigateOnSuccess);
+    },
+    onError: (error) => {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Something ";
+      toast.error(errorMsg);
+      if (onError) onError();
+      if (navigateOnError) navigate(navigateOnError);
+    },
+  });
+};
 
 // Delete Data
-// const DeleteData = ({
-//   url,
-//   key,
-//   optionalKey,
-//   successType,
-//   errorType,
-//   navigateOnSuccess,
-//   navigateOnError,
-// }) => {
-//   const navigate = useNavigate();
-//   const queryClient = useQueryClient();
+const DeleteData = ({
+  url,
+  key,
+  optionalKey,
+  navigateOnSuccess,
+  navigateOnError,
+}) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: async ({ id }) => {
-//       const response = await AxiosAuthInstance.delete(`${url}/${id}`);
-//       return response.data;
-//     },
-//     onSuccess: (data) => {
-//       toast.success(data?.message || "Deleted successfully");
-//       queryClient.invalidateQueries([key, optionalKey || ""]);
-//       if (navigateOnSuccess) navigate(navigateOnSuccess);
-//     },
-//     onError: (error) => {
-//       const errorMsg =
-//         error?.response?.data?.error ||
-//         error?.response?.data?.message ||
-//         "Something went wrong, please try again later.";
-//       toast.error(errorMsg);
-//       if (navigateOnError) navigate(navigateOnError);
-//     },
-//   });
-// };
+  return useMutation({
+    mutationFn: async ({ id }) => {
+      const response = await axiosInstance.delete(`${url}/${id}`); // Use axiosInstance
+      return response.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message || "Deleted successfully");
+      queryClient.invalidateQueries([key, optionalKey || ""]);
+      if (navigateOnSuccess) navigate(navigateOnSuccess);
+    },
+    onError: (error) => {
+      const errorMsg =
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        "Something went wrong, please try again later.";
+      toast.error(errorMsg);
+      if (navigateOnError) navigate(navigateOnError);
+    },
+  });
+};
 
-export { FetchData };
-// export { FetchData, PostData, PutData, DeleteData };
+export { FetchData, PostData, PutData, DeleteData };

@@ -16,8 +16,6 @@ const EmployeeListPage = () => {
     key: QUERY_KEYS.EMPLOYEE_LIST,
   });
 
-  console.log(employees);
-
   return (
     <AppLayout>
       <div className="employeeListPage">
