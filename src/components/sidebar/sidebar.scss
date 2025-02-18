@@ -1,0 +1,42 @@
+@use "../../styles/foundations/mixins.scss";
+
+.sidebar {
+  position: absolute;
+  top: 60px;
+  left: 0;
+
+  height: calc(100vh - 60px);
+  width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease-in-out;
+
+  background-color: white;
+  z-index: 10;
+
+  @include mixins.tablet {
+    left: -250px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  &.sidebar_menu_open {
+    left: 0;
+  }
+
+  .sidebar_menuContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+
+    .sidebat_menuItem {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      svg {
+        font-size: 20px;
+        color: var(--color-primary);
+      }
+    }
+  }
+}

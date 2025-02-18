@@ -1,0 +1,82 @@
+@use "../../styles/foundations/mixins.scss";
+
+.navbar {
+  height: 60px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2%;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  z-index: 100;
+
+  .logo {
+  }
+
+  .navbar_menu_container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid transparent;
+
+    &:hover {
+      .avatar {
+        border: 1px solid #fac003;
+      }
+    }
+
+    .avatar {
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    .navbar_menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      span {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+
+    .sidebar_menuBtn {
+      display: none;
+
+      @include mixins.tablet {
+        display: flex;
+      }
+
+      svg {
+        font-size: 32px;
+      }
+    }
+  }
+}
