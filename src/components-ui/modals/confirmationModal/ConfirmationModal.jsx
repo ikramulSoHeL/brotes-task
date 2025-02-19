@@ -1,31 +1,39 @@
 import React from "react";
 import "./confirmationModal.scss";
 
-const ConfirmationModal = ({ onClose, onConfirm }) => {
+// icons
+import { RxCross2 } from "react-icons/rx";
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
   return (
-    <div className="confirmationModal">
-      <div className="cm_container">
-        <div className="modal_header">
-          <span>Are you sure?</span>
-          <button onClick={onClose}>
-            <span>X</span>
-          </button>
-        </div>
+    <>
+      {isOpen && (
+        <div className="confirmationModal">
+          <div className="confirmationModal_container">
+            <div className="modal_header">
+              <span>Delete!!!</span>
 
-        <div className="modal_body">
-          <p>Are you sure you want to delete this employee?</p>
-        </div>
+              <button onClick={onClose} className="modal_closeBtn">
+                <RxCross2 />
+              </button>
+            </div>
 
-        <div className="modal_btns">
-          <button className="btn btn-primary" onClick={onConfirm}>
-            yes
-          </button>
-          <button className="btn btn-secondary" onClick={onClose}>
-            No
-          </button>
+            <div className="confirmationModal_content">
+              <p>Are you sure you want to delete this employee?</p>
+            </div>
+
+            <div className="modal_btns">
+              <button className="primaryBtn" onClick={onConfirm}>
+                yes
+              </button>
+              <button className="primaryBtn outline" onClick={onClose}>
+                No
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

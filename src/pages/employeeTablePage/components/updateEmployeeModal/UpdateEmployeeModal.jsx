@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import "./createEmployeeModal.scss";
+import React, { useEffect, useState } from "react";
+import "./updateEmployeeModal.scss";
 
 // icons
 import { MdOutlinePhotoCamera } from "react-icons/md";
 
 // api services
-import { PostData } from "../../../../apis/api-services";
+import { FetchData, PutData } from "../../../../apis/api-services";
 import { API_URLS } from "../../../../constants/apis-urls";
 import { QUERY_KEYS } from "../../../../constants/query-keys";
 
-const CreateEmployeeModal = ({ isOpen, onClose }) => {
+// helpers
+import { ROOT_IMAGE_URL } from "../../../../utils/config";
+
+const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
   // states
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -20,7 +24,29 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
     status: "",
     image: null,
   });
-  const [imagePreview, setImagePreview] = useState(null);
+
+  const { data: employeeData, isLoading: isEmployeeDataLoading } = FetchData({
+    url: API_URLS.EMPLOYEE_BY_ID + "/" + id,
+    key: QUERY_KEYS.EMPLOYEE_BY_ID,
+    dependency: true,
+    dependencyValue: id,
+  });
+
+  // Populate form data when employee data is loaded
+  useEffect(() => {
+    if (employeeData) {
+      setFormData({
+        name: employeeData.employee.name || "",
+        phone: employeeData.employee.phone || "",
+        email: employeeData.employee.email || "",
+        department: employeeData.employee.department || "",
+        address: employeeData.employee.address || "",
+        status: employeeData.employee.status || "",
+        image: employeeData.employee.image || null,
+      });
+    }
+  }, [employeeData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -28,6 +54,7 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
       [name]: value,
     }));
   };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -39,48 +66,27 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const { mutate: addEmployee, isLoading: isEmployeeLoading } = PostData({
-    url: API_URLS.EMPLOYEE_CREATE,
-    key: QUERY_KEYS.EMPLOYEE_CREATE,
-    onSuccess: () => {
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        department: "",
-        address: "",
-        status: "",
-        image: null,
-      });
-      setImagePreview(null);
-      onClose();
-    },
-  });
+  const { mutate: updateEmployee, isLoading: isUpdateEmployeeLoading } =
+    PutData({
+      url: API_URLS.EMPLOYEE_UPDATE,
+      key: QUERY_KEYS.EMPLOYEE_UPDATE,
+      dynamicURL: true,
+      onSuccess: () => {
+        onClose();
+      },
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create FormData to send image and other data
-    const dataToSubmit = new FormData();
-    dataToSubmit.append("name", formData.name);
-    dataToSubmit.append("phone", formData.phone);
-    dataToSubmit.append("email", formData.email);
-    dataToSubmit.append("department", formData.department);
-    dataToSubmit.append("address", formData.address);
-    dataToSubmit.append("status", formData.status);
-    if (formData.image) {
-      dataToSubmit.append("image", formData.image);
-    }
-
-    // Call your API service to submit the form
-    addEmployee({ formData: dataToSubmit });
+    updateEmployee({ id: id, formData });
   };
 
   return (
     <>
       {isOpen && (
-        <div className="createEmployeeModal">
-          <div className="createEmployeeModal_container">
+        <div className="updateEmployeeModal">
+          <div className="updateEmployeeModal_container">
             <form className="modal_form" onSubmit={handleSubmit}>
               <div className="image_inputPreview">
                 <div className="image_input">
@@ -97,110 +103,95 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
                   {imagePreview ? (
                     <img src={imagePreview} alt="Preview" />
                   ) : (
-                    <img
-                      src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg?t=st=1739985008~exp=1739988608~hmac=37296decbb8c96f885ad069fdde5337c9b607cf3122d90383f7f9f062715063a&w=740"
-                      alt=""
-                    />
+                    <>
+                      {formData.image !== null ? (
+                        <img
+                          src={
+                            ROOT_IMAGE_URL + "/employeeImages/" + formData.image
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg?t=st=1739985008~exp=1739988608~hmac=37296decbb8c96f885ad069fdde5337c9b607cf3122d90383f7f9f062715063a&w=740"
+                          alt=""
+                        />
+                      )}
+                    </>
                   )}
                 </div>
               </div>
 
-              <div className="createEmployee_inputSection">
+              <div className="updateEmployee_inputSection">
                 <div className="input_group">
-                  <label htmlFor="name" className="">
-                    Name
-                  </label>
+                  <label>Name</label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
-                    placeholder="Enter Name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="phone">Phone</label>
+                  <label>Phone</label>
                   <input
                     type="text"
-                    id="phone"
                     name="phone"
-                    placeholder="Enter Phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="email">Email</label>
+                  <label>Email</label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
-                    placeholder="Enter Email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="department">Department</label>
+                  <label>Department</label>
                   <input
                     type="text"
-                    id="department"
                     name="department"
-                    placeholder="Enter Department"
                     value={formData.department}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="address">Address</label>
+                  <label>Address</label>
                   <input
                     type="text"
-                    id="address"
                     name="address"
-                    placeholder="Enter Address"
                     value={formData.address}
                     onChange={handleChange}
-                    required
                   />
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="status">Status</label>
+                  <label>Status</label>
                   <select
                     name="status"
                     id="status"
                     value={formData.status}
                     onChange={handleChange}
                   >
-                    <option value="">Select Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
               </div>
 
-              <div className="createEmployee_btns">
-                <button
-                  type="submit"
-                  className={`primaryBtn ${isEmployeeLoading ? "loading" : ""}`}
-                  disabled={isEmployeeLoading}
-                >
-                  {isEmployeeLoading ? "Saving..." : "Save"}
+              <div className="modal_btns">
+                <button type="submit" className="primaryBtn">
+                  Update
                 </button>
-                <button
-                  type="button"
-                  className="primaryBtn outline"
-                  onClick={onClose}
-                >
+                <button className="primaryBtn outline" onClick={onClose}>
                   Cancel
                 </button>
               </div>
@@ -212,4 +203,4 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default CreateEmployeeModal;
+export default UpdateEmployeeModal;

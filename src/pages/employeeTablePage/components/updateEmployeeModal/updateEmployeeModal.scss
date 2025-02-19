@@ -1,6 +1,6 @@
 @use "../../../../styles/foundations/mixins.scss";
 
-.createEmployeeModal {
+.updateEmployeeModal {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
 
-  .createEmployeeModal_container {
+  .updateEmployeeModal_container {
     width: 650px;
     display: flex;
     padding: 40px 24px;
@@ -86,7 +86,7 @@
         }
       }
 
-      .createEmployee_btns {
+      .modal_btns {
         width: 100%;
         display: flex;
         justify-content: flex-end;
@@ -97,7 +97,7 @@
   }
 }
 
-.createEmployee_inputSection {
+.updateEmployee_inputSection {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);

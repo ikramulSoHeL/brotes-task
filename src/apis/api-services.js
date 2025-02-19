@@ -96,9 +96,8 @@ const PutData = ({
   return useMutation({
     mutationFn: async ({ id, formData }) => {
       const apiUrl = dynamicURL ? `${url}/${id}` : url;
-      const instance = auth ? AxiosAuthInstance : AxiosWithOutAuthInstance;
 
-      const response = await instance.put(apiUrl, formData, {
+      const response = await axiosInstance.put(apiUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
