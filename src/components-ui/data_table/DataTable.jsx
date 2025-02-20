@@ -15,12 +15,6 @@ const DataTable = ({ data, columns }) => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
-    // state: {
-    //   globalFilter: globalFilterInput,
-    // },
-    // onGlobalFilterChange: setGlobalFilterInput,
   });
   return (
     <div className="dataTable">

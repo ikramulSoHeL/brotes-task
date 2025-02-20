@@ -5,7 +5,9 @@
 
   .app_main {
     width: 100%;
-    padding-left: 250px;
+    max-height: calc(100vh - 60px);
+    padding-left: 280px;
+    overflow-y: auto;
     transition: all 0.3s ease-in-out;
 
     @include mixins.tablet {

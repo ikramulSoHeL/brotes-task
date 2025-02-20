@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./navbar.scss";
+import { Link } from "react-router-dom";
 
 // icons
 import { IoMenuOutline } from "react-icons/io5";
+import { BiLogoJquery } from "react-icons/bi";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,9 +22,10 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div className="logo">
-        <span>BroTecs</span>
-      </div>
+      <Link to={"/"} className="logo_link">
+        <BiLogoJquery />
+        <span>Brotecs</span>
+      </Link>
 
       <div className="navbar_menu_container">
         <div className="avatar" onClick={handleMenuOpen}>
@@ -33,8 +36,12 @@ const Navbar = () => {
         </div>
         {isMenuOpen && (
           <div className="navbar_menu">
-            <span>Profile</span>
-            <span>Settings</span>
+            <div className="mavbar_menuItem">
+              <span>Profile</span>
+            </div>
+            <div className="mavbar_menuItem">
+              <span>Settings</span>
+            </div>
           </div>
         )}
 

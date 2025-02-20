@@ -1,0 +1,74 @@
+@use "../../..//styles/foundations/mixins.scss";
+
+.employeeCard_skeleton {
+  width: 100%;
+  height: 358px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--border_gray);
+  background-color: var(--secoundary_bg);
+
+  .ecs_imageContainer {
+    display: flex;
+    align-items: center;
+    padding: 48px 0 24px 0;
+
+    .ecs_image {
+      height: 100px;
+      width: 100px;
+      border-radius: 50%;
+    }
+  }
+
+  .esc_infoContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    .name {
+      height: 24px;
+      width: 50%;
+      min-width: 80px;
+    }
+
+    .dept {
+      height: 18px;
+      width: 10%;
+      min-width: 40px;
+    }
+
+    .phone {
+      height: 18px;
+      width: 40%;
+      min-width: 120px;
+      margin-top: 12px;
+    }
+
+    .email {
+      height: 18px;
+      width: 60%;
+      min-width: 120px;
+    }
+  }
+
+  .esc_socials {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+
+    .social {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+    }
+  }
+}

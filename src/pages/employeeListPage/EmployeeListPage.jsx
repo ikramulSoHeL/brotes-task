@@ -19,6 +19,7 @@ import { ROOT_IMAGE_URL } from "../../utils/config";
 
 // components
 import AppLayout from "../../components/appLayout/AppLayout";
+import EmployeeCardSkeleton from "../../components-ui/skeletons/employeeCardSkeleton/EmployeeCardSkeleton";
 
 const EmployeeListPage = () => {
   // states
@@ -69,63 +70,86 @@ const EmployeeListPage = () => {
 
         <div className="employee_listContainer">
           {isEmployeesLoading ? (
-            <div>Loading...</div>
+            <>
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+              <EmployeeCardSkeleton />
+            </>
           ) : (
-            filteredEmployees?.map((employee) => (
-              <div key={employee._id} className="employee_card">
-                <div className="card_actions">
-                  <div className="card_action">
-                    <GoInfo />
-                  </div>
-                  <div className="card_action">
-                    <RiDeleteBin6Line />
-                  </div>
-                </div>
+            <>
+              {/* <EmployeeCardSkeleton /> */}
 
-                <div className="card_image">
-                  <div className="card_imageDiv">
-                    {employee?.image === null ? (
-                      <img
-                        src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-                        alt="Employee Profile"
-                      />
-                    ) : (
-                      <img
-                        src={
-                          ROOT_IMAGE_URL + "/employeeImages/" + employee?.image
-                        }
-                        alt="Employee Profile"
-                      />
-                    )}
+              {filteredEmployees?.map((employee) => (
+                <div key={employee._id} className="employee_card">
+                  <div className="card_actions">
+                    <div className="card_action">
+                      <GoInfo />
+                    </div>
+                    <div className="card_action">
+                      <RiDeleteBin6Line />
+                    </div>
                   </div>
-                </div>
 
-                <div className="employee_info">
-                  <h2>{employee?.name}</h2>
-                  <p>{employee?.department}</p>
-                  <p>{employee?.email}</p>
-                  <p>{employee?.phone}</p>
-                </div>
+                  <div className="card_image">
+                    <div className="card_imageDiv">
+                      {employee?.image === null ? (
+                        <img
+                          src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+                          alt="Employee Profile"
+                        />
+                      ) : (
+                        <img
+                          src={
+                            ROOT_IMAGE_URL +
+                            "/employeeImages/" +
+                            employee?.image
+                          }
+                          alt="Employee Profile"
+                        />
+                      )}
+                    </div>
+                  </div>
 
-                <div className="social_icons">
-                  <div className="social_icon">
-                    <BiLogoFacebook />
-                  </div>
-                  <div className="social_icon">
-                    <BiLogoTwitter />
-                  </div>
-                  <div className="social_icon">
-                    <BiLogoLinkedin />
-                  </div>
-                  <div className="social_icon">
-                    <TiSocialSkypeOutline />
-                  </div>
-                </div>
+                  <div className="employee_info">
+                    <h2>{employee?.name}</h2>
+                    <span className="employee_dept">
+                      {employee?.department}
+                    </span>
 
-                <div className="card_bottom"></div>
-                <div className="card_line1"></div>
-              </div>
-            ))
+                    <div className="sdditional_info">
+                      <p className="employee_phone">{employee?.phone}</p>
+                      <span className="employee_email">{employee?.email}</span>
+                    </div>
+                  </div>
+
+                  <div className="social_icons">
+                    <div className="social_icon">
+                      <BiLogoFacebook />
+                    </div>
+                    <div className="social_icon">
+                      <BiLogoTwitter />
+                    </div>
+                    <div className="social_icon">
+                      <BiLogoLinkedin />
+                    </div>
+                    <div className="social_icon">
+                      <TiSocialSkypeOutline />
+                    </div>
+                  </div>
+
+                  <div className="card_bottom"></div>
+                  <div className="card_line1"></div>
+                  <div className="card_line2"></div>
+                </div>
+              ))}
+            </>
           )}
         </div>
       </div>

@@ -6,37 +6,52 @@
   gap: 24px;
   padding: 32px;
 
+  @include mixins.tablet {
+    padding: 24px 16px;
+  }
+
   .pageHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 0 6px 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--border_gray);
+
+    @include mixins.tablet {
+      align-items: flex-start;
+      gap: 12px;
+      flex-direction: column;
+    }
 
     span {
       font-size: 20px;
       font-weight: 500;
+      color: var(--text_black);
     }
 
     .employee_search {
-      height: 30px;
+      height: 36px;
       width: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @include mixins.tablet {
+        max-width: 250px;
+      }
 
       input {
         width: 100%;
         height: 100%;
         padding: 0 12px;
         border-radius: 4px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border_gray);
 
         font-size: 14px;
 
         &:focus {
           outline: none;
-          border: 1px solid #2c2c2c;
+          border: 1px solid var(--border_black);
         }
       }
     }
@@ -45,7 +60,7 @@
   .employee_listContainer {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     row-gap: 24px;
     column-gap: 24px;
 
@@ -57,10 +72,12 @@
       gap: 24px;
       padding: 24px;
 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
+      border: 1px solid var(--border_gray);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: var(--white);
       transition: all 0.3s ease-in-out;
 
       &:hover {
@@ -88,7 +105,7 @@
           justify-content: center;
 
           border-radius: 50%;
-          background-color: seagreen;
+          background-color: var(--blue);
           cursor: pointer;
           transform: translateX(30px);
           transition: all 0.3s ease-in-out;
@@ -123,12 +140,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding-top: 16px;
 
         .card_imageDiv {
           width: 100px;
           height: 100px;
           border-radius: 50%;
-          background-color: seagreen;
           overflow: hidden;
 
           img {
@@ -145,7 +162,45 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 2px;
+
+        h2 {
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1;
+          color: var(--text_black);
+        }
+
+        .employee_dept {
+          font-size: 11px;
+          font-weight: 400;
+          color: var(--text_gray);
+          text-transform: uppercase;
+        }
+
+        .sdditional_info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          text-align: center;
+          padding-top: 12px;
+
+          .employee_phone {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text_black);
+          }
+
+          .employee_email {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text_white);
+
+            padding: 2px 12px;
+            background-color: var(--blue);
+            border-radius: 20px;
+          }
+        }
       }
 
       .social_icons {
@@ -163,12 +218,22 @@
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          // background-color: seagreen;
-          border: 1px solid rgb(196, 196, 196);
+          border: 1px solid var(--border_blue);
+
+          &:hover {
+            background-color: var(--blue);
+            transition: all 0.3s ease-in-out;
+
+            svg {
+              color: var(--white);
+              transition: all 0.3s ease-in-out;
+            }
+          }
 
           svg {
             font-size: 16px;
-            color: seagreen;
+            color: var(--blue);
+            transition: all 0.3s ease-in-out;
           }
         }
       }
@@ -194,23 +259,37 @@
 
         height: 16px;
         width: 100%;
-        background-color: rgba(3, 91, 94, 0.507);
+        background-color: var(--blue);
       }
+
+      // lines
       .card_line1 {
         position: absolute;
-        top: 140px;
+        top: 150px;
         left: 0;
 
-        height: 4px;
-        width: 10%;
-        // transform: rotate(-35deg);
-        background-color: seagreen;
+        height: 2px;
+        width: 35%;
+        background-color: var(--blue);
         transition: all 0.6s ease-in-out;
-        z-index: -1;
       }
       &:hover .card_line1 {
         width: 85%;
         transition: all 0.6s ease-in-out;
+      }
+      .card_line2 {
+        position: absolute;
+        top: 154px;
+        left: 0;
+
+        height: 2px;
+        width: 30%;
+        background-color: var(--blue);
+        transition: all 0.6s ease-in-out;
+      }
+      &:hover .card_line2 {
+        width: 80%;
+        transition: all 0.6s ease-in-out 0.2s;
       }
     }
   }

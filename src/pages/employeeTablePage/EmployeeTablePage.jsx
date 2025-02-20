@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./employeeTablePage.scss";
 
 // icons
 import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
+import { GoInfo } from "react-icons/go";
 
+// helpers
 import { ROOT_IMAGE_URL } from "../../utils/config";
 
 // api services
@@ -26,8 +28,9 @@ const EmployeeTablePage = () => {
     useState(false);
   const [isEditEmployeeModalOpen, setIsEditEmployeeModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-
-  console.log(selectedEmployeeId);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   // create employee
   const handleCreateEmployeeModalOpen = () => {
@@ -76,6 +79,21 @@ const EmployeeTablePage = () => {
     key: QUERY_KEYS.EMPLOYEE_LIST,
   });
 
+  // Filter employees based on search term and selected filters
+  const filteredEmployees = employees?.data.filter((employee) => {
+    const matchesSearchTerm =
+      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.phone.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus = !selectedStatus || employee.status === selectedStatus;
+
+    const matchesDepartment =
+      !selectedDepartment || employee.department === selectedDepartment;
+
+    return matchesSearchTerm && matchesStatus && matchesDepartment;
+  });
+
   const columns = [
     {
       accessorKey: "image",
@@ -122,7 +140,9 @@ const EmployeeTablePage = () => {
       cell: (info) => {
         return (
           <div className="table_actions">
-            <button className="table_textBtn">View</button>
+            <button className="table_iconBtn">
+              <GoInfo />
+            </button>
 
             <button className="table_iconBtn">
               <CiEdit
@@ -158,19 +178,60 @@ const EmployeeTablePage = () => {
           </button>
         </div>
 
-        <div className="filter"></div>
+        {isEmployeesLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="employee_tableContainer">
+            <div className="table_filterContainer">
+              <div className="table_select">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  <option value="">Select Status</option>
+                  {[
+                    ...new Set(
+                      employees?.data.map((employee) => employee.status)
+                    ),
+                  ].map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        <div className="employee_tableContainer">
-          {isEmployeesLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="etv">
-              <div className="filter"></div>
+              <div className="table_select">
+                <select
+                  value={selectedDepartment}
+                  onChange={(e) => setSelectedDepartment(e.target.value)}
+                >
+                  <option value="">Select Department</option>
+                  {[
+                    ...new Set(
+                      employees?.data.map((employee) => employee.department)
+                    ),
+                  ].map((department) => (
+                    <option key={department} value={department}>
+                      {department}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <DataTable data={employees?.data} columns={columns} />
+              <div className="table_search">
+                <input
+                  type="text"
+                  placeholder="Search Employee...."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
-          )}
-        </div>
+
+            <DataTable data={filteredEmployees} columns={columns} />
+          </div>
+        )}
 
         <CreateEmployeeModal
           isOpen={isCreateEmployeeModalOpen}
