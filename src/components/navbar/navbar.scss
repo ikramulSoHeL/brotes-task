@@ -12,7 +12,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid var(--border_gray);
   background-color: var(--secoundary_bg);
-  z-index: 10000;
+  z-index: 1000;
 
   .logo_link {
     display: flex;
@@ -42,18 +42,19 @@
     gap: 16px;
     border: 1px solid transparent;
 
-    &:hover {
-      .avatar {
-        border: 1px solid var(--orange);
-      }
-    }
-
     .avatar {
       height: 35px;
       width: 35px;
       border-radius: 50%;
+      border: 1px solid var(--border_gray);
       overflow: hidden;
       cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        border: 1px solid var(--blue);
+        transition: all 0.3s ease-in-out;
+      }
 
       img {
         height: 100%;

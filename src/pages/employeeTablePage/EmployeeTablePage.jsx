@@ -198,15 +198,8 @@ const EmployeeTablePage = () => {
                 onChange={(e) => setSelectedStatus(e.target.value)}
               >
                 <option value="">Select Status</option>
-                {[
-                  ...new Set(
-                    employees?.data.map((employee) => employee.status)
-                  ),
-                ].map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
             </div>
 

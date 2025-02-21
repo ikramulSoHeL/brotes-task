@@ -12,7 +12,7 @@
   border-right: 1px solid var(--border_gray);
   background-color: var(--secoundary_bg);
   transition: left 0.3s ease-in-out;
-  z-index: 10000;
+  z-index: 1000;
 
   @include mixins.tablet {
     left: -280px;

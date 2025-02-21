@@ -7,7 +7,7 @@
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100;
+  z-index: 100000;
 
   display: flex;
   align-items: center;
@@ -27,6 +27,7 @@
     border-radius: 4px;
     background-color: var(--white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px rgba(36, 48, 41, 0.438);
 
     .modal_header {
       display: flex;
