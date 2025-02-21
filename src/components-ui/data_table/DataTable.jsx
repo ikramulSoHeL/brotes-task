@@ -55,10 +55,8 @@ const DataTable = ({ data, columns }) => {
           </table>
         </div>
       ) : (
-        <div className="dataTable_body">
-          <div className="dataTable_empty">
-            <span>No Data Found</span>
-          </div>
+        <div className="dataTable_empty">
+          <span>No Data Found</span>
         </div>
       )}
     </div>

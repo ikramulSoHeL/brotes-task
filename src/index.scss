@@ -55,3 +55,10 @@ body {
   background-color: var(--border_gray);
   border-radius: 4px;
 }
+
+// remove number input arrows
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

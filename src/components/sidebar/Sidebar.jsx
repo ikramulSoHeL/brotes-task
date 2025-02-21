@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.scss";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 // icons
 import { HiOutlineClipboardList } from "react-icons/hi";
@@ -15,8 +15,9 @@ const Sidebar = () => {
         <div className="sidebar_menuContainer">
           <NavLink
             to={"/"}
-            className="sidebat_menuItem"
-            activeclassName="active"
+            className={({ isActive }) =>
+              isActive ? "sidebat_menuItem active" : "sidebat_menuItem"
+            }
           >
             <HiOutlineClipboardList />
             <span>Employee List</span>
@@ -24,8 +25,9 @@ const Sidebar = () => {
 
           <NavLink
             to={"/employee-table"}
-            className="sidebat_menuItem"
-            activeclassName="active"
+            className={({ isActive }) =>
+              isActive ? "sidebat_menuItem active" : "sidebat_menuItem"
+            }
           >
             <GoTable />
             <span>Employee Table View</span>

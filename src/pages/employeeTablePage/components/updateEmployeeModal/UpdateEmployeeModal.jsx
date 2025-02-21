@@ -11,6 +11,7 @@ import { QUERY_KEYS } from "../../../../constants/query-keys";
 
 // helpers
 import { ROOT_IMAGE_URL } from "../../../../utils/config";
+import validateEmployeeForm from "../../../../helpers/Employee_validation";
 
 const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
   // states
@@ -79,6 +80,10 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // validate form
+    const isValid = validateEmployeeForm(formData);
+    if (!isValid) return;
+
     updateEmployee({ id: id, formData });
   };
 
@@ -136,19 +141,9 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
                 <div className="input_group">
                   <label>Phone</label>
                   <input
-                    type="text"
+                    type="number"
                     name="phone"
                     value={formData.phone}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="input_group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
                     onChange={handleChange}
                   />
                 </div>
@@ -164,16 +159,6 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
                 </div>
 
                 <div className="input_group">
-                  <label>Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="input_group">
                   <label>Status</label>
                   <select
                     name="status"
@@ -184,6 +169,26 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
+                </div>
+
+                <div className="input_group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="input_group">
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
 

@@ -1,0 +1,28 @@
+@use "../../../styles/foundations/mixins.scss";
+
+.loadingEmployeeTablePage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+
+  @include mixins.tablet {
+    padding: 0 16px;
+  }
+
+  .lelp_header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border_gray);
+
+    @include mixins.tablet {
+      flex-direction: column;
+    }
+
+    .text {
+      height: 24px;
+      width: 20%;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@use "../../../styles/foundations/mixins.scss";
+
+.loadingEmployeeListPage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+
+  @include mixins.tablet {
+    padding: 0 16px;
+  }
+
+  .lelp_header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border_gray);
+
+    @include mixins.tablet {
+      flex-direction: column;
+    }
+
+    .text {
+      height: 24px;
+      width: 20%;
+    }
+  }
+
+  .lelp_cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    row-gap: 24px;
+    column-gap: 24px;
+  }
+}

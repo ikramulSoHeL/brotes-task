@@ -1,24 +1,53 @@
-import { useState } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 
 // toast setup
 import { ToastContainer, Slide, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // pages import
-import EmployeeListPage from "./pages/employeeListPage/EmployeeListPage";
-import EmployeeTablePage from "./pages/employeeTablePage/EmployeeTablePage";
+const EmployeeListPage = lazy(() =>
+  import("./pages/employeeListPage/EmployeeListPage")
+);
+const EmployeeTablePage = lazy(() =>
+  import("./pages/employeeTablePage/EmployeeTablePage")
+);
+
 import ErrorPage from "./pages/errorPage/ErrorPage";
+
+// components
+import AppLayout from "./components/appLayout/AppLayout";
+import LoadingEmployeeListPage from "./components-ui/loadingPages/loadingEmployeeListPage/LoadingEmployeeListPage";
+import LoadingEmployeeTablePage from "./components-ui/loadingPages/loadingEmployeeTablePage/LoadingEmployeeTablePage";
 
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<EmployeeListPage />} />
-        <Route path="/employee-table" element={<EmployeeTablePage />} />
+      <ErrorBoundary>
+        <AppLayout>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<LoadingEmployeeListPage />}>
+                  <EmployeeListPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/employee-table"
+              element={
+                <Suspense fallback={<LoadingEmployeeTablePage />}>
+                  <EmployeeTablePage />
+                </Suspense>
+              }
+            />
 
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </AppLayout>
+      </ErrorBoundary>
 
       <ToastContainer
         position="top-right"

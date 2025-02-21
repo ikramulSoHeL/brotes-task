@@ -1,0 +1,90 @@
+@use "../../../styles/foundations/mixins.scss";
+
+.employeeInfoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include mixins.tablet {
+    padding: 0 16px;
+  }
+
+  .employeeInfoModal_content {
+    position: relative;
+
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 32px 24px;
+
+    border-radius: 10px;
+    background-color: var(--secoundary_bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .modal_close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      background-color: var(--white);
+      cursor: pointer;
+    }
+
+    .eim_imageContainer {
+      height: 120px;
+      width: 120px;
+      border-radius: 50%;
+      border: 1px solid var(--gray);
+      overflow: hidden;
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    .employee_infoContent {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .info_row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .info_title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--text_black);
+        }
+
+        .info_value {
+          font-size: 16px;
+          font-weight: 400;
+          color: var(--text_black);
+        }
+      }
+    }
+  }
+}

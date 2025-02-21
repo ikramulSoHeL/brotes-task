@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./employeeListPage.scss";
 
 // icons
@@ -12,26 +12,33 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 // api services
 import { API_URLS } from "../../constants/apis-urls";
 import { QUERY_KEYS } from "../../constants/query-keys";
-import { FetchData } from "../../apis/api-services";
+import { DeleteData, FetchData } from "../../apis/api-services";
 
 // helpers
 import { ROOT_IMAGE_URL } from "../../utils/config";
 
 // components
-import AppLayout from "../../components/appLayout/AppLayout";
 import EmployeeCardSkeleton from "../../components-ui/skeletons/employeeCardSkeleton/EmployeeCardSkeleton";
+import EmployeeInfoModal from "../../components-ui/modals/employeeInfoModal/EmployeeInfoModal";
+import ConfirmationModal from "../../components-ui/modals/confirmationModal/ConfirmationModal";
+import EmployeeCard from "../../components-ui/employeeCard/EmployeeCard";
 
 const EmployeeListPage = () => {
   // states
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [isEmployeeInfoModalOpen, setIsEmployeeInfoModalOpen] = useState(false);
+  const [employeeInfoData, setEmployeeInfoData] = useState(null);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
-  // fetch brands
+  // fetch employees
   const { data: employees, isLoading: isEmployeesLoading } = FetchData({
     url: API_URLS.EMPLOYEE_LIST,
     key: QUERY_KEYS.EMPLOYEE_LIST,
   });
 
+  // search
   useEffect(() => {
     if (employees?.data) {
       const filter = employees.data.filter((employee) => {
@@ -47,113 +54,89 @@ const EmployeeListPage = () => {
       setFilteredEmployees([]);
     }
   }, [searchQuery, employees]);
-
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
+  // info modal
+  const handleInfoModalOpen = (data) => {
+    setIsEmployeeInfoModalOpen(true);
+    setEmployeeInfoData(data);
+  };
+  const handleInfoModalClose = () => {
+    setIsEmployeeInfoModalOpen(false);
+    setEmployeeInfoData(null);
+  };
+
+  // delete employee
+  const openDeleteEmployeeModal = (id) => {
+    setIsConfirmationModalOpen(true);
+    setSelectedEmployeeId(id);
+  };
+  const closeDeleteEmployeeModal = () => {
+    setIsConfirmationModalOpen(false);
+    setSelectedEmployeeId(null);
+  };
+  const { mutate: deleteEmployee, isLoading: isDeleteEmployeeLoading } =
+    DeleteData({
+      url: API_URLS.EMPLOYEE_DELETE,
+      key: QUERY_KEYS.EMPLOYEE_DELETE,
+      dynamicURL: true,
+      onSuccess: () => {
+        closeDeleteEmployeeModal();
+      },
+    });
+  const handleDeleteEmployee = (id) => {
+    deleteEmployee({ id: id });
+    setIsConfirmationModalOpen(false);
+  };
+
   return (
-    <AppLayout>
-      <div className="employeeListPage">
-        <div className="pageHeader">
-          <span>Employee List</span>
+    <div className="employeeListPage">
+      <div className="pageHeader">
+        <span>Employee List</span>
 
-          <div className="employee_search">
-            <input
-              type="text"
-              placeholder="Search Employee...."
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </div>
-        </div>
-
-        <div className="employee_listContainer">
-          {isEmployeesLoading ? (
-            <>
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-              <EmployeeCardSkeleton />
-            </>
-          ) : (
-            <>
-              {/* <EmployeeCardSkeleton /> */}
-
-              {filteredEmployees?.map((employee) => (
-                <div key={employee._id} className="employee_card">
-                  <div className="card_actions">
-                    <div className="card_action">
-                      <GoInfo />
-                    </div>
-                    <div className="card_action">
-                      <RiDeleteBin6Line />
-                    </div>
-                  </div>
-
-                  <div className="card_image">
-                    <div className="card_imageDiv">
-                      {employee?.image === null ? (
-                        <img
-                          src="https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-                          alt="Employee Profile"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            ROOT_IMAGE_URL +
-                            "/employeeImages/" +
-                            employee?.image
-                          }
-                          alt="Employee Profile"
-                        />
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="employee_info">
-                    <h2>{employee?.name}</h2>
-                    <span className="employee_dept">
-                      {employee?.department}
-                    </span>
-
-                    <div className="sdditional_info">
-                      <p className="employee_phone">{employee?.phone}</p>
-                      <span className="employee_email">{employee?.email}</span>
-                    </div>
-                  </div>
-
-                  <div className="social_icons">
-                    <div className="social_icon">
-                      <BiLogoFacebook />
-                    </div>
-                    <div className="social_icon">
-                      <BiLogoTwitter />
-                    </div>
-                    <div className="social_icon">
-                      <BiLogoLinkedin />
-                    </div>
-                    <div className="social_icon">
-                      <TiSocialSkypeOutline />
-                    </div>
-                  </div>
-
-                  <div className="card_bottom"></div>
-                  <div className="card_line1"></div>
-                  <div className="card_line2"></div>
-                </div>
-              ))}
-            </>
-          )}
+        <div className="employee_search">
+          <input
+            type="text"
+            placeholder="Search Employee...."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
       </div>
-    </AppLayout>
+
+      <div className="employee_listContainer">
+        {filteredEmployees.length === 0 ? (
+          <div className="empty_data">
+            <span>No Employees Found</span>
+          </div>
+        ) : (
+          <>
+            {filteredEmployees?.map((employee, index) => (
+              <EmployeeCard
+                key={index}
+                employee={employee}
+                handleInfoModalOpen={handleInfoModalOpen}
+                openDeleteEmployeeModal={openDeleteEmployeeModal}
+              />
+            ))}
+          </>
+        )}
+      </div>
+
+      <EmployeeInfoModal
+        isOpen={isEmployeeInfoModalOpen}
+        onClose={handleInfoModalClose}
+        employeeData={employeeInfoData}
+      />
+
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={() => handleDeleteEmployee(selectedEmployeeId)}
+      />
+    </div>
   );
 };
 

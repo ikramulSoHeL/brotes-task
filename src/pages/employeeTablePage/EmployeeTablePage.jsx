@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import "./employeeTablePage.scss";
 
 // icons
@@ -15,22 +15,25 @@ import { API_URLS } from "../../constants/apis-urls";
 import { QUERY_KEYS } from "../../constants/query-keys";
 
 // components
-import AppLayout from "../../components/appLayout/AppLayout";
 import DataTable from "../../components-ui/data_table/DataTable";
 import CreateEmployeeModal from "./components/createEmployeeModal/CreateEmployeeModal";
 import ConfirmationModal from "../../components-ui/modals/confirmationModal/ConfirmationModal";
 import UpdateEmployeeModal from "./components/updateEmployeeModal/UpdateEmployeeModal";
+import TableSkeleton from "../../components-ui/skeletons/tableSkeleton/TableSkeleton";
+import EmployeeInfoModal from "../../components-ui/modals/employeeInfoModal/EmployeeInfoModal";
 
 const EmployeeTablePage = () => {
   // states
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [isCreateEmployeeModalOpen, setIsCreateEmployeeModalOpen] =
     useState(false);
   const [isEditEmployeeModalOpen, setIsEditEmployeeModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [employeeData, setEmployeeData] = useState(null);
 
   // create employee
   const handleCreateEmployeeModalOpen = () => {
@@ -73,6 +76,16 @@ const EmployeeTablePage = () => {
     setIsConfirmationModalOpen(false);
   };
 
+  // info modal
+  const handleInfoModalOpen = (data) => {
+    setIsInfoModalOpen(true);
+    setEmployeeData(data);
+  };
+  const handleInfoModalClose = () => {
+    setIsInfoModalOpen(false);
+    setSelectedEmployeeId(null);
+  };
+
   // fetch employees data
   const { data: employees, isLoading: isEmployeesLoading } = FetchData({
     url: API_URLS.EMPLOYEE_LIST,
@@ -103,7 +116,7 @@ const EmployeeTablePage = () => {
           <div className="table_image">
             {info.row.original.image === null ? (
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjDGMp734S91sDuUFqL51_xRTXS15iiRoHew&s"
+                src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg?t=st=1739985008~exp=1739988608~hmac=37296decbb8c96f885ad069fdde5337c9b607cf3122d90383f7f9f062715063a&w=740"
                 alt=""
               />
             ) : (
@@ -141,7 +154,7 @@ const EmployeeTablePage = () => {
         return (
           <div className="table_actions">
             <button className="table_iconBtn">
-              <GoInfo />
+              <GoInfo onClick={() => handleInfoModalOpen(info.row.original)} />
             </button>
 
             <button className="table_iconBtn">
@@ -165,93 +178,94 @@ const EmployeeTablePage = () => {
   ];
 
   return (
-    <AppLayout>
-      <div className="employeeTablePage">
-        <div className="pageHeader">
-          <span>Employee Table</span>
+    <div className="employeeTablePage">
+      <div className="pageHeader">
+        <span>Employee Table</span>
 
-          <button
-            onClick={handleCreateEmployeeModalOpen}
-            className="primaryBtn"
-          >
-            Add New
-          </button>
-        </div>
+        <button onClick={handleCreateEmployeeModalOpen} className="primaryBtn">
+          Add New
+        </button>
+      </div>
 
-        {isEmployeesLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <div className="employee_tableContainer">
-            <div className="table_filterContainer">
-              <div className="table_select">
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                >
-                  <option value="">Select Status</option>
-                  {[
-                    ...new Set(
-                      employees?.data.map((employee) => employee.status)
-                    ),
-                  ].map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="table_select">
-                <select
-                  value={selectedDepartment}
-                  onChange={(e) => setSelectedDepartment(e.target.value)}
-                >
-                  <option value="">Select Department</option>
-                  {[
-                    ...new Set(
-                      employees?.data.map((employee) => employee.department)
-                    ),
-                  ].map((department) => (
-                    <option key={department} value={department}>
-                      {department}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="table_search">
-                <input
-                  type="text"
-                  placeholder="Search Employee...."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+      {isEmployeesLoading ? (
+        <TableSkeleton />
+      ) : (
+        <div className="employee_tableContainer">
+          <div className="table_filterContainer">
+            <div className="table_select">
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
+                <option value="">Select Status</option>
+                {[
+                  ...new Set(
+                    employees?.data.map((employee) => employee.status)
+                  ),
+                ].map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <DataTable data={filteredEmployees} columns={columns} />
+            <div className="table_select">
+              <select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+              >
+                <option value="">Select Department</option>
+                {[
+                  ...new Set(
+                    employees?.data.map((employee) => employee.department)
+                  ),
+                ].map((department) => (
+                  <option key={department} value={department}>
+                    {department}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="table_search">
+              <input
+                type="text"
+                placeholder="Search Employee...."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
-        )}
 
-        <CreateEmployeeModal
-          isOpen={isCreateEmployeeModalOpen}
-          onClose={handleCreateEmployeeModalClose}
-        />
+          <DataTable data={filteredEmployees} columns={columns} />
+        </div>
+      )}
 
-        <UpdateEmployeeModal
-          isOpen={isEditEmployeeModalOpen}
-          onClose={handleEditEmployeeModalClose}
-          onConfirm={() => handleEditEmployeeModalClose()}
-          id={selectedEmployeeId}
-        />
+      <CreateEmployeeModal
+        isOpen={isCreateEmployeeModalOpen}
+        onClose={handleCreateEmployeeModalClose}
+      />
 
-        <ConfirmationModal
-          isOpen={isConfirmationModalOpen}
-          onClose={() => setIsConfirmationModalOpen(false)}
-          onConfirm={() => handleDeleteEmployee(selectedEmployeeId)}
-        />
-      </div>
-    </AppLayout>
+      <UpdateEmployeeModal
+        isOpen={isEditEmployeeModalOpen}
+        onClose={handleEditEmployeeModalClose}
+        onConfirm={() => handleEditEmployeeModalClose()}
+        id={selectedEmployeeId}
+      />
+
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={() => handleDeleteEmployee(selectedEmployeeId)}
+      />
+
+      <EmployeeInfoModal
+        isOpen={isInfoModalOpen}
+        onClose={handleInfoModalClose}
+        employeeData={employeeData}
+      />
+    </div>
   );
 };
 

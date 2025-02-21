@@ -13,8 +13,12 @@
   align-items: center;
   justify-content: center;
 
+  @include mixins.tablet {
+    padding: 0 16px;
+  }
+
   .confirmationModal_container {
-    width: 500px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     gap: 8px;

@@ -34,6 +34,7 @@ const Navbar = () => {
             alt=""
           />
         </div>
+
         {isMenuOpen && (
           <div className="navbar_menu">
             <div className="mavbar_menuItem">

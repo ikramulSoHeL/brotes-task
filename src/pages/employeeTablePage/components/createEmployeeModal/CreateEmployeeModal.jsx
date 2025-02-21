@@ -8,6 +8,7 @@ import { MdOutlinePhotoCamera } from "react-icons/md";
 import { PostData } from "../../../../apis/api-services";
 import { API_URLS } from "../../../../constants/apis-urls";
 import { QUERY_KEYS } from "../../../../constants/query-keys";
+import validateEmployeeForm from "../../../../helpers/Employee_validation";
 
 const CreateEmployeeModal = ({ isOpen, onClose }) => {
   // states
@@ -59,6 +60,10 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // validate form
+    const isValid = validateEmployeeForm(formData);
+    if (!isValid) return;
 
     // Create FormData to send image and other data
     const dataToSubmit = new FormData();
@@ -124,24 +129,11 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
                 <div className="input_group">
                   <label htmlFor="phone">Phone</label>
                   <input
-                    type="text"
+                    type="number"
                     id="phone"
                     name="phone"
                     placeholder="Enter Phone"
                     value={formData.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="input_group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    value={formData.email}
                     onChange={handleChange}
                     required
                   />
@@ -161,19 +153,6 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="input_group">
-                  <label htmlFor="address">Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    placeholder="Enter Address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="input_group">
                   <label htmlFor="status">Status</label>
                   <select
                     name="status"
@@ -185,6 +164,32 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
+                </div>
+
+                <div className="input_group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="input_group">
+                  <label htmlFor="address">Address</label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Enter Address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
 
