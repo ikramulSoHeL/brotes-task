@@ -7,7 +7,7 @@
   padding: 32px;
 
   @include mixins.tablet {
-    padding: 0 16px;
+    padding: 24 16px;
   }
 
   .lelp_header {
@@ -18,11 +18,16 @@
 
     @include mixins.tablet {
       flex-direction: column;
+      gap: 8px;
     }
 
     .text {
       height: 24px;
       width: 20%;
+
+      @include mixins.tablet {
+        width: 40%;
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // icons
 import { IoMenuOutline } from "react-icons/io5";
 import { BiLogoJquery } from "react-icons/bi";
+import { RxCross2 } from "react-icons/rx";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +13,11 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const handleSidebarMenu = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+
     const sidebar = document.querySelector(".sidebar");
     const app_main = document.querySelector(".app_main");
 
@@ -47,7 +52,7 @@ const Navbar = () => {
         )}
 
         <div className="sidebar_menuBtn" onClick={handleSidebarMenu}>
-          <IoMenuOutline />
+          {isSidebarOpen ? <RxCross2 /> : <IoMenuOutline />}
         </div>
       </div>
     </div>
