@@ -5,7 +5,7 @@ import "./employeeInfoModal.scss";
 import { RxCross2 } from "react-icons/rx";
 
 // helpers
-import { ROOT_IMAGE_URL } from "../../../utils/config";
+import { IMAGE_URL } from "../../../constants/imageUrls";
 
 const EmployeeInfoModal = ({ isOpen, onClose, employeeData }) => {
   return (
@@ -25,9 +25,7 @@ const EmployeeInfoModal = ({ isOpen, onClose, employeeData }) => {
                 />
               ) : (
                 <img
-                  src={
-                    ROOT_IMAGE_URL + "/employeeImages/" + employeeData?.image
-                  }
+                  src={`${IMAGE_URL.EMPLOYEE}/${employeeData?.image}` || ""}
                   alt=""
                 />
               )}

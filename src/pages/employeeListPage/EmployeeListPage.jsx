@@ -22,6 +22,7 @@ import EmployeeCardSkeleton from "../../components-ui/skeletons/employeeCardSkel
 import EmployeeInfoModal from "../../components-ui/modals/employeeInfoModal/EmployeeInfoModal";
 import ConfirmationModal from "../../components-ui/modals/confirmationModal/ConfirmationModal";
 import EmployeeCard from "../../components-ui/employeeCard/EmployeeCard";
+import LoadingEmployeeListPage from "../../components-ui/loadingPages/loadingEmployeeListPage/LoadingEmployeeListPage";
 
 const EmployeeListPage = () => {
   // states
@@ -107,21 +108,33 @@ const EmployeeListPage = () => {
       </div>
 
       <div className="employee_listContainer">
-        {filteredEmployees.length === 0 ? (
+        {isEmployeesLoading ? (
+          <>
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+            <EmployeeCardSkeleton />
+          </>
+        ) : employees?.data?.length === 0 ? (
           <div className="empty_data">
             <span>No Employees Found</span>
           </div>
         ) : (
-          <>
-            {filteredEmployees?.map((employee, index) => (
-              <EmployeeCard
-                key={index}
-                employee={employee}
-                handleInfoModalOpen={handleInfoModalOpen}
-                openDeleteEmployeeModal={openDeleteEmployeeModal}
-              />
-            ))}
-          </>
+          filteredEmployees?.map((employee, index) => (
+            <EmployeeCard
+              key={index}
+              employee={employee}
+              handleInfoModalOpen={handleInfoModalOpen}
+              openDeleteEmployeeModal={openDeleteEmployeeModal}
+            />
+          ))
         )}
       </div>
 

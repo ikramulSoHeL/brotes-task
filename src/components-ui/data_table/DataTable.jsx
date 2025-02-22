@@ -18,7 +18,7 @@ const DataTable = ({ data, columns }) => {
   });
   return (
     <div className="dataTable">
-      {data && data.length > 0 ? (
+      {data && data.length > 0 && (
         <div className="dataTable_body">
           <table>
             <thead>
@@ -53,10 +53,6 @@ const DataTable = ({ data, columns }) => {
               ))}
             </tbody>
           </table>
-        </div>
-      ) : (
-        <div className="dataTable_empty">
-          <span>No Data Found</span>
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import { GoInfo } from "react-icons/go";
 
 // helpers
 import { ROOT_IMAGE_URL } from "../../utils/config";
+import { IMAGE_URL } from "../../constants/imageUrls";
 
 // api services
 import { DeleteData, FetchData } from "../../apis/api-services";
@@ -121,9 +122,7 @@ const EmployeeTablePage = () => {
               />
             ) : (
               <img
-                src={
-                  ROOT_IMAGE_URL + "/employeeImages/" + info.row.original.image
-                }
+                src={`${IMAGE_URL.EMPLOYEE}/${info.row.original.image}`}
                 alt=""
               />
             )}
@@ -187,8 +186,10 @@ const EmployeeTablePage = () => {
         </button>
       </div>
 
-      {isEmployeesLoading ? (
-        <TableSkeleton />
+      {filteredEmployees?.length === 0 && !isEmployeesLoading ? (
+        <div className="empty_data">
+          <span>No Employees Found</span>
+        </div>
       ) : (
         <div className="employee_tableContainer">
           <div className="table_filterContainer">

@@ -81,6 +81,21 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
     addEmployee({ formData: dataToSubmit });
   };
 
+  const handleCloseModal = () => {
+    setFormData({
+      name: "",
+      phone: "",
+      email: "",
+      department: "",
+      address: "",
+      status: "",
+      image: null,
+    });
+    setImagePreview(null);
+
+    onClose();
+  };
+
   return (
     <>
       {isOpen && (
@@ -204,7 +219,7 @@ const CreateEmployeeModal = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   className="primaryBtn outline"
-                  onClick={onClose}
+                  onClick={handleCloseModal}
                 >
                   Cancel
                 </button>

@@ -10,7 +10,7 @@ import { API_URLS } from "../../../../constants/apis-urls";
 import { QUERY_KEYS } from "../../../../constants/query-keys";
 
 // helpers
-import { ROOT_IMAGE_URL } from "../../../../utils/config";
+import { IMAGE_URL } from "../../../../constants/imageUrls";
 import validateEmployeeForm from "../../../../helpers/Employee_validation";
 
 const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
@@ -87,6 +87,20 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
     updateEmployee({ id: id, formData });
   };
 
+  const handleCloseModal = () => {
+    setFormData({
+      name: "",
+      phone: "",
+      email: "",
+      department: "",
+      address: "",
+      status: "",
+      image: null,
+    });
+    setImagePreview(null);
+    onClose();
+  };
+
   return (
     <>
       {isOpen && (
@@ -111,9 +125,7 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
                     <>
                       {formData.image !== null ? (
                         <img
-                          src={
-                            ROOT_IMAGE_URL + "/employeeImages/" + formData.image
-                          }
+                          src={`${IMAGE_URL.EMPLOYEE}/${formData.image}`}
                           alt=""
                         />
                       ) : (
@@ -196,7 +208,10 @@ const UpdateEmployeeModal = ({ isOpen, onClose, onConfirm, id }) => {
                 <button type="submit" className="primaryBtn">
                   Update
                 </button>
-                <button className="primaryBtn outline" onClick={onClose}>
+                <button
+                  className="primaryBtn outline"
+                  onClick={handleCloseModal}
+                >
                   Cancel
                 </button>
               </div>

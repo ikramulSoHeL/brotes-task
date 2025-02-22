@@ -10,19 +10,13 @@ import { GoInfo } from "react-icons/go";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 // helpers
-import { ROOT_IMAGE_URL } from "../../utils/config";
+import { IMAGE_URL } from "../../constants/imageUrls";
 
 const EmployeeCard = ({
   employee,
   handleInfoModalOpen,
   openDeleteEmployeeModal,
 }) => {
-  const imageUrl = useMemo(() => {
-    return employee?.image === null
-      ? "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg?t=st=1739985008~exp=1739988608~hmac=37296decbb8c96f885ad069fdde5337c9b607cf3122d90383f7f9f062715063a&w=740"
-      : ROOT_IMAGE_URL + "/employeeImages/" + employee?.image;
-  }, [employee?.image]);
-
   return (
     <div className="employee_card">
       <div className="card_actions">
@@ -42,7 +36,17 @@ const EmployeeCard = ({
 
       <div className="card_image">
         <div className="card_imageDiv">
-          <img src={imageUrl} alt="Employee Profile" />
+          {employee?.image === null ? (
+            <img
+              src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg?t=st=1739985008~exp=1739988608~hmac=37296decbb8c96f885ad069fdde5337c9b607cf3122d90383f7f9f062715063a&w=740"
+              alt="Employee Profile"
+            />
+          ) : (
+            <img
+              src={`${IMAGE_URL.EMPLOYEE}/${employee?.image}`}
+              alt="Employee Profile"
+            />
+          )}
         </div>
       </div>
 
