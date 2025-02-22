@@ -186,7 +186,7 @@ const EmployeeTablePage = () => {
         </button>
       </div>
 
-      {filteredEmployees?.length === 0 && !isEmployeesLoading ? (
+      {employees?.data?.length === 0 && !isEmployeesLoading ? (
         <div className="empty_data">
           <span>No Employees Found</span>
         </div>
